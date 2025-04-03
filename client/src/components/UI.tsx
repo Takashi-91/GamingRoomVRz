@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useKeyboardControls } from "@react-three/drei";
 import { useAudio } from "../lib/stores/useAudio";
 import { useLighting } from "../lib/stores/useLighting";
+import { useInteraction } from "../lib/stores/useInteraction";
 import { cn } from "../lib/utils";
+import { ObjectDetails } from "./ui/ObjectDetails";
 
 export default function UI() {
   const [showControls, setShowControls] = useState(false);
@@ -10,6 +12,7 @@ export default function UI() {
   const isMuted = useAudio((state) => state.isMuted);
   const { toggleMute } = useAudio();
   const { rgbColor, lightMode, toggleLightMode } = useLighting();
+  const isInspecting = useInteraction((state) => state.isInspecting);
   
   // Fade out info message after 5 seconds
   useEffect(() => {
@@ -37,39 +40,41 @@ export default function UI() {
 
   return (
     <div className="fixed inset-0 pointer-events-none">
-      {/* Top bar - controls and info */}
-      <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4">
-        <div className="flex gap-2">
-          <button 
-            className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
-            onClick={() => setShowControls(!showControls)}
-          >
-            Controls
-          </button>
+      {/* Top bar - controls and info - hide when inspecting an object */}
+      {!isInspecting && (
+        <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4">
+          <div className="flex gap-2">
+            <button 
+              className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
+              onClick={() => setShowControls(!showControls)}
+            >
+              Controls
+            </button>
+            
+            <button 
+              className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
+              onClick={toggleMute}
+            >
+              {isMuted ? "🔇 Unmute" : "🔊 Mute"}
+            </button>
+            
+            <button 
+              className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
+              onClick={toggleLightMode}
+              style={lightMode === "rgb" ? getRgbStyle() : {}}
+            >
+              {lightMode === "rgb" ? "RGB Mode" : "Standard Lighting"}
+            </button>
+          </div>
           
-          <button 
-            className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
-            onClick={toggleMute}
-          >
-            {isMuted ? "🔇 Unmute" : "🔊 Mute"}
-          </button>
-          
-          <button 
-            className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
-            onClick={toggleLightMode}
-            style={lightMode === "rgb" ? getRgbStyle() : {}}
-          >
-            {lightMode === "rgb" ? "RGB Mode" : "Standard Lighting"}
-          </button>
+          <div className="text-white px-4 py-2 bg-black/70 rounded">
+            3D Gaming Room Portfolio
+          </div>
         </div>
-        
-        <div className="text-white px-4 py-2 bg-black/70 rounded">
-          3D Gaming Room Portfolio
-        </div>
-      </div>
+      )}
       
       {/* Controls modal */}
-      {showControls && (
+      {showControls && !isInspecting && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/60 pointer-events-auto">
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg max-w-md">
             <h2 className="text-white text-xl font-bold mb-4">Controls</h2>
@@ -91,6 +96,10 @@ export default function UI() {
                 <span>Toggle RGB Lighting:</span>
                 <span>L Key</span>
               </li>
+              <li className="flex justify-between">
+                <span>Exit Focus Mode:</span>
+                <span>Click anywhere or press Escape</span>
+              </li>
             </ul>
             
             <button 
@@ -103,13 +112,18 @@ export default function UI() {
         </div>
       )}
       
-      {/* Info message */}
-      <div className={cn(
-        "absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-6 py-3 rounded-lg transition-opacity duration-1000",
-        showInfo ? "opacity-100" : "opacity-0"
-      )}>
-        Click and drag to look around. Click on objects to interact with them.
-      </div>
+      {/* Info message - hide when inspecting */}
+      {!isInspecting && (
+        <div className={cn(
+          "absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 text-white px-6 py-3 rounded-lg transition-opacity duration-1000",
+          showInfo ? "opacity-100" : "opacity-0"
+        )}>
+          Click and drag to look around. Click on objects to interact with them.
+        </div>
+      )}
+      
+      {/* Object details panel */}
+      <ObjectDetails />
     </div>
   );
 }

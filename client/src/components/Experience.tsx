@@ -19,7 +19,7 @@ interface ExperienceProps {
 export default function Experience({ onLoaded }: ExperienceProps) {
   const { camera } = useThree();
   const controlsRef = useRef<any>(null);
-  const { init: initInteraction } = useInteraction();
+  const { init: initInteraction, setCamera, setControls } = useInteraction();
 
   // Initialize audio elements
   useEffect(() => {
@@ -57,11 +57,15 @@ export default function Experience({ onLoaded }: ExperienceProps) {
       controlsRef.current.minDistance = 1.5; // Minimum zoom
       controlsRef.current.maxDistance = 6; // Maximum zoom
       
-      // Constrain horizontal rotation as needed
-      // controlsRef.current.minAzimuthAngle = -Math.PI * 0.5;
-      // controlsRef.current.maxAzimuthAngle = Math.PI * 0.5;
+      // Pass the controls to the interaction system
+      setControls(controlsRef.current);
+      
+      // Also set the camera (backup in case the automatic detection fails)
+      if (camera) {
+        setCamera(camera);
+      }
     }
-  }, []);
+  }, [camera, setCamera, setControls]);
 
   return (
     <>
