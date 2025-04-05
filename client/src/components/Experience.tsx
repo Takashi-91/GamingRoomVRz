@@ -6,11 +6,16 @@ import Room from "./Room";
 import GamingSetup from "./GamingSetup";
 import Couch from "./Couch";
 import ArcadeMachine from "./ArcadeMachine";
-import VRStand from "./VRStand";
+import VRStand from "./TVStand";
 import Lighting from "./Lighting";
 import WallDecor from "./WallDecor";
 import { useInteraction } from "../lib/stores/useInteraction";
 import { useAudio } from "../lib/stores/useAudio";
+import { CoffeeTableModel } from "./CoffeeTableModel";
+import TVStand from "./TVStand";
+import TV from "./TV";  
+import { Play } from "lucide-react";
+import PlaystationSetup from "./PlaystationSetup";
 
 interface ExperienceProps {
   onLoaded: () => void;
@@ -87,19 +92,20 @@ export default function Experience({ onLoaded }: ExperienceProps) {
       <Room />
       
       {/* Gaming setup components */}
-      <GamingSetup position={[-2, 0, -2]} rotation={[0, Math.PI * 0.25, 0]} />
+      <GamingSetup position={[-1.2, 0, -4]} rotation={[0, Math.PI * 0.25, 0]} />
       
       {/* Couch area */}
-      <Couch position={[2, 0, 0]} rotation={[0, -Math.PI * 0.5, 0]} />
+      <Couch position={[1.5, 0, -0.1]} rotation={[0, -Math.PI * 0.5, 0]} />
       
       {/* Retro arcade machine */}
-      <ArcadeMachine position={[3, 0, -3]} rotation={[0, -Math.PI * 0.25, 0]} />
+      <ArcadeMachine position={[1.5, 0, -4]} rotation={[0, -Math.PI * 0.25, 0]} />
       
+      <PlaystationSetup position ={[-1.6, 0.5, -0.3]} rotation={[0, Math.PI * 0.50, 0]}/>
+
+      <TV position={[-1.6, 0.5, -0.3]} rotation={[0, Math.PI * 0.50, 0]} />
       {/* VR headset stand */}
-      <VRStand position={[-2, 0, 1]} rotation={[0, Math.PI * 0.25, 0]} />
-      
-      {/* Wall decoration (posters, shelves, etc) */}
-      <WallDecor />
+      <TVStand position={[-1.5, -0.8, -1]} rotation={[0, Math.PI * 0.50, 0]} />
+ 
       
       {/* Dynamic lighting system */}
       <Lighting />
