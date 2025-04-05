@@ -43,12 +43,35 @@ export default function ArcadeMachine({ position = [0, 0, 0], rotation = [0, 0, 
   // Register interactive elements when component mounts
   useEffect(() => {
     if (arcadeRef.current) {
-      // Register the entire cabinet as interactive
+      // Register the entire cabinet as interactive with game links
       registerInteractiveObject(
         arcadeRef.current,
         "Retro Arcade Cabinet",
         "arcade",
-        "A classic stand-up arcade cabinet featuring multiple retro games. The cabinet features authentic controls and a vibrant display, perfect for enjoying classic arcade titles like Pac-Man, Galaga, and Space Invaders."
+        "A classic stand-up arcade cabinet featuring multiple retro games. The cabinet features authentic controls and a vibrant display, perfect for enjoying classic arcade titles like Pac-Man, Galaga, and Space Invaders.",
+        undefined,
+        [
+          {
+            text: "Play Space Invaders",
+            url: "https://www.classicgames.io/space-invaders",
+            icon: "👾"
+          },
+          {
+            text: "Play Pac-Man",
+            url: "https://www.google.com/logos/2010/pacman10-i.html",
+            icon: "🟡"
+          },
+          {
+            text: "Play Galaga",
+            url: "https://www.classicgames.io/galaga",
+            icon: "🚀"
+          },
+          {
+            text: "Play Donkey Kong",
+            url: "https://www.classicgames.io/donkey-kong",
+            icon: "🦍"
+          }
+        ]
       );
     }
     

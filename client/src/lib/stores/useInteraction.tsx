@@ -9,6 +9,12 @@ interface ObjectDetails {
   title: string;
   description: string;
   type: InteractiveObjectType;
+  links?: {
+    text: string;
+    url: string;
+    icon?: string;
+  }[];
+  isMonitor?: boolean;
 }
 
 interface InteractionState {
@@ -34,7 +40,9 @@ interface InteractionState {
     label: string, 
     type: InteractiveObjectType,
     description: string, 
-    callback?: () => void
+    callback?: () => void,
+    links?: { text: string; url: string; icon?: string }[],
+    isMonitor?: boolean
   ) => void;
   unregisterInteractiveObject: (object: THREE.Object3D) => void;
   checkIntersections: () => void;
@@ -117,12 +125,22 @@ export const useInteraction = create<InteractionState>((set, get) => ({
     mouse.y = -(y / window.innerHeight) * 2 + 1;
   },
   
-  registerInteractiveObject: (object, label, type, description, callback) => {
+  registerInteractiveObject: (
+    object, 
+    label, 
+    type, 
+    description, 
+    callback?,
+    links?: { text: string; url: string; icon?: string }[],
+    isMonitor?: boolean
+  ) => {
     // Store object info in userData
     object.userData.interactiveLabel = label;
     object.userData.interactiveType = type;
     object.userData.interactiveDescription = description;
     object.userData.interactiveCallback = callback;
+    object.userData.interactiveLinks = links;
+    object.userData.isMonitor = isMonitor;
     
     set((state) => ({
       interactiveObjects: [...state.interactiveObjects, object]
@@ -213,7 +231,9 @@ export const useInteraction = create<InteractionState>((set, get) => ({
     const details: ObjectDetails = {
       title: object.userData.interactiveLabel || "Object",
       description: object.userData.interactiveDescription || "No description available.",
-      type: object.userData.interactiveType || "default"
+      type: object.userData.interactiveType || "default",
+      links: object.userData.interactiveLinks,
+      isMonitor: object.userData.isMonitor
     };
     
     // Animate camera position and controls

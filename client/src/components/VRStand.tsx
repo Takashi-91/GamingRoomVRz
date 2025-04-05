@@ -47,12 +47,35 @@ export default function VRStand({ position = [0, 0, 0], rotation = [0, 0, 0] }: 
   // Register interactive elements when component mounts
   useEffect(() => {
     if (vrRef.current) {
-      // Register the entire VR setup
+      // Register the entire VR setup with VR experience links
       registerInteractiveObject(
         vrRef.current,
         "VR Gaming Station",
         "vr",
-        "A complete virtual reality gaming setup with a high-end headset and motion controllers. This setup provides an immersive gaming experience with full 360-degree tracking."
+        "A complete virtual reality gaming setup with a high-end headset and motion controllers. This setup provides an immersive gaming experience with full 360-degree tracking.",
+        undefined,
+        [
+          {
+            text: "Experience: Google Earth VR",
+            url: "https://arvr.google.com/earth/",
+            icon: "🌎"
+          },
+          {
+            text: "Experience: Beat Saber",
+            url: "https://www.beatsaber.com/",
+            icon: "🎵"
+          },
+          {
+            text: "Experience: Half-Life: Alyx",
+            url: "https://www.half-life.com/en/alyx/",
+            icon: "🔫"
+          },
+          {
+            text: "Experience: VRChat",
+            url: "https://hello.vrchat.com/",
+            icon: "👥"
+          }
+        ]
       );
     }
     

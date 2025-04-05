@@ -20,20 +20,48 @@ export default function Couch({ position = [0, 0, 0], rotation = [0, 0, 0] }: Co
   // Register interactive elements
   useFrame(() => {
     if (couchRef.current && !couchRef.current.userData.registered) {
-      registerInteractiveObject(couchRef.current, "Couch & Controllers", () => {
-        console.log("Couch area interaction");
-        playHit();
-        
-        // Animated effect for the controller
-        if (controllerRef.current) {
-          const currentY = controllerRef.current.position.y;
-          // Simple animation - move controller up slightly
-          controllerRef.current.position.y = currentY + 0.05;
-          setTimeout(() => {
-            if (controllerRef.current) controllerRef.current.position.y = currentY;
-          }, 300);
-        }
-      });
+      registerInteractiveObject(
+        couchRef.current, 
+        "Couch & Gaming Console", 
+        "couch",
+        "A comfortable seating area with a modern gaming console set up for relaxed gameplay. The coffee table holds controllers and other gaming accessories for convenient access.",
+        () => {
+          console.log("Couch area interaction");
+          playHit();
+          
+          // Animated effect for the controller
+          if (controllerRef.current) {
+            const currentY = controllerRef.current.position.y;
+            // Simple animation - move controller up slightly
+            controllerRef.current.position.y = currentY + 0.05;
+            setTimeout(() => {
+              if (controllerRef.current) controllerRef.current.position.y = currentY;
+            }, 300);
+          }
+        },
+        [
+          {
+            text: "Game: Fortnite",
+            url: "https://www.fortnite.com/",
+            icon: "🎮"
+          },
+          {
+            text: "Game: FIFA 23",
+            url: "https://www.ea.com/games/fifa/fifa-23",
+            icon: "⚽"
+          },
+          {
+            text: "Game: Call of Duty",
+            url: "https://www.callofduty.com/",
+            icon: "🎯"
+          },
+          {
+            text: "Game: Minecraft",
+            url: "https://www.minecraft.net/",
+            icon: "⛏️"
+          }
+        ]
+      );
       couchRef.current.userData.registered = true;
     }
   });

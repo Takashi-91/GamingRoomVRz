@@ -54,22 +54,53 @@ export default function GamingSetup({ position = [0, 0, 0], rotation = [0, 0, 0]
     }
     
     if (monitorRef.current) {
-      // Register the monitor as interactive
+      // Register the monitor as interactive with projects and social links
       registerInteractiveObject(
         monitorRef.current,
-        "Monitor",
+        "My Portfolio Monitor",
         "pc",
-        "A 27-inch high refresh rate gaming monitor with 144Hz and 1ms response time. Perfect for fast-paced games with minimal motion blur.",
+        "Welcome to my interactive portfolio! This interactive display showcases my projects and social media links. Click to browse through my work and connect with me.",
         () => {
-          // Toggle monitor on/off
+          // Turn on the monitor
           if (monitorRef.current) {
             const material = monitorRef.current.material as THREE.MeshStandardMaterial;
-            material.emissive.set(
-              material.emissive.r === 0 ? "#104060" : "#000000"
-            );
+            material.emissive.set("#104060");
             playHit();
           }
-        }
+        },
+        [
+          {
+            text: "GitHub Profile",
+            url: "https://github.com/yourusername",
+            icon: "🐙"
+          },
+          {
+            text: "LinkedIn",
+            url: "https://linkedin.com/in/yourusername",
+            icon: "🔗"
+          },
+          {
+            text: "Personal Website",
+            url: "https://yourwebsite.com",
+            icon: "🌐"
+          },
+          {
+            text: "Twitter/X",
+            url: "https://twitter.com/yourusername",
+            icon: "🐦"
+          },
+          {
+            text: "Project: Weather App",
+            url: "https://github.com/yourusername/weather-app",
+            icon: "☁️"
+          },
+          {
+            text: "Project: Task Manager",
+            url: "https://github.com/yourusername/task-manager",
+            icon: "📝"
+          }
+        ],
+        true // Mark as monitor for special UI
       );
     }
     
