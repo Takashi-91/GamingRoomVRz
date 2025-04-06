@@ -1,12 +1,9 @@
 import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Text } from "@react-three/drei";
 import * as THREE from "three";
 import { useInteraction } from "../lib/stores/useInteraction";
 import { useAudio } from "../lib/stores/useAudio";
 import { useLighting } from "../lib/stores/useLighting";
-import { Coffee } from "lucide-react";
-import { CoffeeTableModel } from "./CoffeeTableModel";
 import { TVModel } from "./TVModel";
 
 interface TVProps {
@@ -14,53 +11,71 @@ interface TVProps {
   rotation?: [number, number, number];
 }
 
+// Dummy animate function as placeholder
+const animateHeadset = () => {
+  console.log("Animating headset...");
+};
+
 export default function TV({ position = [0, 0, 0], rotation = [0, 0, 0] }: TVProps) {
   const vrRef = useRef<THREE.Group>(null);
-  const headsetRef = useRef<THREE.Mesh>(null);
-  const controllerLeftRef = useRef<THREE.Mesh>(null);
-  const controllerRightRef = useRef<THREE.Mesh>(null);
-  const standRef = useRef<THREE.Mesh>(null);
-  const lightRef = useRef<THREE.PointLight>(null);
-  
+  const headsetRef = useRef<THREE.Group>(null);
+  const controllerLeftRef = useRef<THREE.Group>(null);
+  const controllerRightRef = useRef<THREE.Group>(null);
+  const standRef = useRef<THREE.Group>(null);
+
   const { registerInteractiveObject } = useInteraction();
   const { playHit, playSuccess } = useAudio();
   const { rgbColor } = useLighting();
-  
-  // VR headset light animation
-  useFrame((state, delta) => {
-    if (lightRef.current) {
-      lightRef.current.color = new THREE.Color(rgbColor);
-      lightRef.current.intensity = 0.2 + Math.sin(state.clock.elapsedTime * 1.5) * 0.1;
+
+  // Animate with lighting effects if needed
+  useFrame(() => {
+    if (rgbColor) {
+      // Example: Add RGB light pulsation or color effect here
     }
   });
-  
-  // Animate headset slightly to simulate a "pickup" effect
-  const animateHeadset = () => {
-    if (headsetRef.current) {
-      const currentY = headsetRef.current.position.y;
-      headsetRef.current.position.y = currentY + 0.1;
-      playHit();
-      
-      setTimeout(() => {
-        if (headsetRef.current) headsetRef.current.position.y = currentY;
-      }, 300);
-    }
-  };
-  
-  // Register interactive elements when component mounts
+
+  const experiences = [
+    {
+      text: "Experience: Google Earth VR",
+      url: "https://arvr.google.com/earth/",
+      icon: "🌎",
+    },
+    {
+      text: "Experience: Beat Saber",
+      url: "https://www.beatsaber.com/",
+      icon: "🎵",
+    },
+    {
+      text: "Experience: Half-Life: Alyx",
+      url: "https://www.half-life.com/en/alyx/",
+      icon: "🔫",
+    },
+    {
+      text: "Experience: VRChat",
+      url: "https://hello.vrchat.com/",
+      icon: "👥",
+    },
+  ];
+
   useEffect(() => {
+
     if (vrRef.current) {
-      // Register the entire VR setup
       registerInteractiveObject(
         vrRef.current,
         "VR Gaming Station",
         "vr",
-        "A complete virtual reality gaming setup with a high-end headset and motion controllers. This setup provides an immersive gaming experience with full 360-degree tracking."
+        "A complete virtual reality gaming setup with a high-end headset and motion controllers. This setup provides an immersive gaming experience with full 360-degree tracking.",
+        () => {
+          const handleEvent = (e: Event) => {
+            e.stopPropagation();
+            playHit();
+          };
+          handleEvent(new Event("custom"));
+        },
       );
     }
-    
+
     if (headsetRef.current) {
-      // Register the headset specifically
       registerInteractiveObject(
         headsetRef.current,
         "VR Headset",
@@ -69,9 +84,8 @@ export default function TV({ position = [0, 0, 0], rotation = [0, 0, 0] }: TVPro
         animateHeadset
       );
     }
-    
+
     if (controllerLeftRef.current) {
-      // Register left controller
       registerInteractiveObject(
         controllerLeftRef.current,
         "Left VR Controller",
@@ -79,9 +93,8 @@ export default function TV({ position = [0, 0, 0], rotation = [0, 0, 0] }: TVPro
         "Motion controller for the left hand with precise tracking. Includes analog sticks, buttons, and haptic feedback for interacting with virtual environments."
       );
     }
-    
+
     if (controllerRightRef.current) {
-      // Register right controller
       registerInteractiveObject(
         controllerRightRef.current,
         "Right VR Controller",
@@ -89,9 +102,8 @@ export default function TV({ position = [0, 0, 0], rotation = [0, 0, 0] }: TVPro
         "Motion controller for the right hand with precise tracking. Includes analog sticks, buttons, and haptic feedback for interacting with virtual environments."
       );
     }
-    
+
     if (standRef.current) {
-      // Register the stand
       registerInteractiveObject(
         standRef.current,
         "VR Headset Stand",
@@ -102,20 +114,14 @@ export default function TV({ position = [0, 0, 0], rotation = [0, 0, 0] }: TVPro
   }, [registerInteractiveObject, playHit]);
 
   return (
-    <group ref={vrRef} position={position} rotation={rotation} name="vr-stand">
-      <TVModel nodes={{}} materials={{}}/>
-      {/* Information label (for accessibility) */}
-      <Text
-        position={[0, 1.5, 0]}
-        rotation={[0, Math.PI - rotation[1], 0]}
-        fontSize={0.1}
-        color="#ffffff"
-        anchorX="center"
-        anchorY="middle"
-        visible={false} // Hidden but will be shown on interaction
-      >
-        VR Headset Stand
-      </Text>
+    <group position={position} rotation={rotation}>
+      <group ref={vrRef} name="vr-setup">
+        <TVModel nodes={{}} materials={{}} />
+      </group>
+      <group ref={headsetRef} name="vr-headset" />
+      <group ref={controllerLeftRef} name="vr-controller-left" />
+      <group ref={controllerRightRef} name="vr-controller-right" />
+      <group ref={standRef} name="vr-stand" />
     </group>
   );
 }

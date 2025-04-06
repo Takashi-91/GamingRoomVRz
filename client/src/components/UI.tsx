@@ -58,17 +58,10 @@ export default function UI() {
               {isMuted ? "🔇 Unmute" : "🔊 Mute"}
             </button>
             
-            <button 
-              className="bg-black/70 text-white px-4 py-2 rounded pointer-events-auto hover:bg-black/90 transition-colors"
-              onClick={toggleLightMode}
-              style={lightMode === "rgb" ? getRgbStyle() : {}}
-            >
-              {lightMode === "rgb" ? "RGB Mode" : "Standard Lighting"}
-            </button>
           </div>
           
           <div className="text-white px-4 py-2 bg-black/70 rounded">
-            3D Gaming Room Portfolio
+            Welcome to the VR Experience
           </div>
         </div>
       )}

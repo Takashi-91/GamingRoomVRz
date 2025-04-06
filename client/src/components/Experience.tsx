@@ -58,9 +58,9 @@ export default function Experience({ onLoaded }: ExperienceProps) {
   useEffect(() => {
     if (controlsRef.current) {
       controlsRef.current.minPolarAngle = Math.PI * 0.15; // Limit looking down
-      controlsRef.current.maxPolarAngle = Math.PI * 0.75; // Limit looking up
-      controlsRef.current.minDistance = 1.5; // Minimum zoom
-      controlsRef.current.maxDistance = 6; // Maximum zoom
+      controlsRef.current.maxPolarAngle = Math.PI * 0.90; // Limit looking up
+      controlsRef.current.minDistance = 2; // Minimum zoom
+      controlsRef.current.maxDistance = 3; // Maximum zoom
       
       // Pass the controls to the interaction system
       setControls(controlsRef.current);

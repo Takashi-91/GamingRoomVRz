@@ -38,7 +38,7 @@ export function SetupModel(props: ModelProps) {
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={[0.093, 0.096, 0.099]}>
-        <group position={[-0.114, -4.316, 2.597]} rotation={[0, 0, -3.141]} scale={0.245}>
+        <group position={[-0.114, -4.116, 2.597]} rotation={[0, 0, -3.141]} scale={0.245}>
           <lineSegments geometry={nodes.Object_5.geometry} material={materials.material_0} />
           <mesh geometry={nodes['Green-material'].geometry} material={materials.Green} castShadow receiveShadow />
           <mesh geometry={nodes['Black-material'].geometry} material={materials.Black} castShadow receiveShadow />
